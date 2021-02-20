@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import contactsActions from '../../redux/actions';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ContactListItem from './ContactListItem';
 import './ContactListAnim.css'
@@ -18,7 +20,7 @@ function ContactList({ contacts, onDeleteContact }) {
       ))}
     </TransitionGroup>
   );
-}
+};
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
@@ -29,4 +31,19 @@ ContactList.propTypes = {
   onDeleteContact: PropTypes.func,
 };
 
-export default ContactList;
+const getVisibleContacts = (allContacts, filter) => {
+    return allContacts.filter(({name}) =>
+      name.toLowerCase().includes(filter.toLowerCase()),
+    );
+  };
+
+const mapStateToProps = ({contacts: {items, filter}}) => ({
+  contacts: getVisibleContacts(items, filter),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
