@@ -19,8 +19,15 @@ class ContactForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { name, number } = this.state;
+    const { contacts } = this.props;
+
+    if (contacts.some(contact => contact.name === name)) {
+      this.props.onSubmit(name);
+      return
+    }
 
     this.props.onAddContact(name, number);
+    this.props.onSave();
 
     this.setState({
       name: '',
@@ -63,10 +70,14 @@ class ContactForm extends Component {
       </>
     );
   }
-}
+};
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+})
 
 const mapDispatchToProps = dispatch => ({
   onAddContact: (name, number) => dispatch(contactsActions.addContact(name, number))
 })
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

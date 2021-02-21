@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { v4 as uuidv4 } from 'uuid';
+
+import { connect } from 'react-redux';
 
 import Container from './components/Container';
 import Header from './components/Header';
@@ -24,77 +25,13 @@ class App extends PureComponent {
     text: ''
   };
 
-  // componentDidMount() {
-  //   const contacts = localStorage.getItem('contacts');
-  //   const parsedContacts = JSON.parse(contacts);
+  handleRadioChange = event => {
+    const { value } = event.target;
 
-  //   if (parsedContacts) {
-  //     this.setState({ contacts: parsedContacts });
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   const prevContacts = prevState.contacts;
-  //   const currentContacts = this.state.contacts;
-
-  //   if (currentContacts !== prevContacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(currentContacts));
-  //   }
-  // }
-
-  // addContact = (name, number) => {
-  //   const { contacts } = this.state;
-  //   const contact = {
-  //     id: uuidv4(),
-  //     name,
-  //     number,
-  //     completed: false,
-  //   };
-
-  //   if (contacts.some(contact => contact.name === name)) {
-  //     this.setState({
-  //       text: `${name} is already in contacts!`,
-  //       error: true,
-  //       showModal: false,
-  //     });
-
-  //     setTimeout(() => {
-  //       this.setState({ error: false, })
-  //     }, 2000);
-
-  //     return
-  //   }
-
-  //   this.setState(({ contacts }) => {
-  //     return { contacts: [...contacts, contact] };
-  //   });
-
-  //   this.toggleModal();
-  // };
-
-  // deleteContact = contactId => {
-  //   this.setState(({ contacts }) => {
-  //     return {
-  //       contacts: contacts.filter(({ id }) => id !== contactId),
-  //     };
-  //   });
-
-  //   this.setState({
-  //     filter: '',
-  //   });
-  // };
-
-  // changeFilter = filter => {
-  //   this.setState({ filter });
-  // };
-
-  // handleRadioChange = event => {
-  //   const { value } = event.target;
-
-  //   this.setState({
-  //     sortBy: value,
-  //   });
-  // };
+    this.setState({
+      sortBy: value,
+    });
+  };
 
   // getSortContacts = contactsList => {
   //   const { sortBy } = this.state;
@@ -134,10 +71,22 @@ class App extends PureComponent {
     }));
   };
 
+  showNotice = (contactName) => {
+    this.setState({
+        text: `${contactName} is already in contacts!`,
+        error: true,
+        showModal: false,
+    });
+    
+    setTimeout(() => {
+        this.setState({ error: false, })
+    }, 2000);
+  }
+
   render() {
     const { sortBy, showModal, error, text } = this.state;
-    // const visibleContacts = this.getVisibleContacts();
-    // const sortedContacts = this.getSortContacts(visibleContacts);
+    // const sortedContacts = this.getSortContacts(this.props.contacts);
+    // console.log(this.props.contacts);
 
     return (
       <Container>
@@ -160,12 +109,12 @@ class App extends PureComponent {
           timeout={500}
         >
           <Modal onClose={this.toggleModal}>
-            <ContactForm />
+            <ContactForm onSave={this.toggleModal} onSubmit={this.showNotice} />
           </Modal>
         </CSSTransition>
 
         <CSSTransition
-          in
+          in={this.props.contacts.length > 1}
           unmountOnExit
           classNames="fade"
           timeout={250}
@@ -190,6 +139,11 @@ class App extends PureComponent {
       </Container>
     );
   }
-}
+};
 
-export default App;
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+});
+
+export default connect(mapStateToProps)(App);
+// export default App;

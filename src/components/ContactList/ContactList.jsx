@@ -35,11 +35,13 @@ const getVisibleContacts = (allContacts, filter) => {
     return allContacts.filter(({name}) =>
       name.toLowerCase().includes(filter.toLowerCase()),
     );
-  };
+};
 
-const mapStateToProps = ({contacts: {items, filter}}) => ({
+const mapStateToProps = ({ contacts: { items, filter } }) => {
+  // console.log(ownProps);
+  return {
   contacts: getVisibleContacts(items, filter),
-});
+}};
 
 const mapDispatchToProps = dispatch => ({
   onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),
