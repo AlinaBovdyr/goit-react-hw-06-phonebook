@@ -37,11 +37,9 @@ const getVisibleContacts = (allContacts, filter) => {
     );
 };
 
-const mapStateToProps = ({ contacts: { items, filter } }) => {
-  // console.log(ownProps);
-  return {
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
   contacts: getVisibleContacts(items, filter),
-}};
+});
 
 const mapDispatchToProps = dispatch => ({
   onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),

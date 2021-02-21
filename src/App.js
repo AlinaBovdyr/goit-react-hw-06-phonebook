@@ -19,7 +19,7 @@ import './styles/animations/ContactListAppear.css';
 
 class App extends PureComponent {
   state = {
-    // sortBy: 'id',
+    sortBy: 'id',
     showModal: false,
     error: false,
     text: ''
@@ -33,37 +33,37 @@ class App extends PureComponent {
     });
   };
 
-  // getSortContacts = contactsList => {
-  //   const { sortBy } = this.state;
+  getSortContacts = contactsList => {
+    const { sortBy } = this.state;
 
-  //   if (sortBy === 'abc') {
-  //     return contactsList.sort((a, b) => {
-  //       const aName = a.name.toLowerCase();
-  //       const bName = b.name.toLowerCase();
-  //       if (aName < bName) {
-  //         return -1;
-  //       }
-  //       if (aName > bName) {
-  //         return 1;
-  //       }
+    if (sortBy === 'abc') {
+      return contactsList.sort((a, b) => {
+        const aName = a.name.toLowerCase();
+        const bName = b.name.toLowerCase();
+        if (aName < bName) {
+          return -1;
+        }
+        if (aName > bName) {
+          return 1;
+        }
 
-  //       return 0;
-  //     });
-  //   }
+        return 0;
+      });
+    }
 
-  //   if (sortBy === 'id') {
-  //     return contactsList.sort((a, b) => {
-  //       if (a.id < b.id) {
-  //         return -1;
-  //       }
-  //       if (a.id > b.id) {
-  //         return 1;
-  //       }
+    if (sortBy === 'id') {
+      return contactsList.sort((a, b) => {
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
 
-  //       return 0;
-  //     });
-  //   }
-  // };
+        return 0;
+      });
+    }
+  };
 
   toggleModal = () => {
     this.setState(({ showModal }) => ({
@@ -85,8 +85,6 @@ class App extends PureComponent {
 
   render() {
     const { sortBy, showModal, error, text } = this.state;
-    // const sortedContacts = this.getSortContacts(this.props.contacts);
-    // console.log(this.props.contacts);
 
     return (
       <Container>
@@ -121,7 +119,7 @@ class App extends PureComponent {
         >
           <div>
             <Filter />
-            {/* <Sorter value={sortBy} onRadioChange={this.handleRadioChange} /> */}
+            <Sorter value={sortBy} onRadioChange={this.handleRadioChange} />
           </div>
         </CSSTransition>
         
@@ -146,4 +144,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(App);
-// export default App;
