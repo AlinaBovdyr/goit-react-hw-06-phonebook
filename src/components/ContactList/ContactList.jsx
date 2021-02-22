@@ -37,9 +37,40 @@ const getVisibleContacts = (allContacts, filter) => {
     );
 };
 
-const mapStateToProps = ({ contacts: { items, filter } }) => ({
-  contacts: getVisibleContacts(items, filter),
-});
+const getSortContacts = (contactsList, sortBy) => {
+    if (sortBy === 'abc') {
+      return contactsList.sort((a, b) => {
+        const aName = a.name.toLowerCase();
+        const bName = b.name.toLowerCase();
+        if (aName < bName) {
+          return -1;
+        }
+        if (aName > bName) {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+
+    if (sortBy === 'id') {
+      return contactsList.sort((a, b) => {
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+  };
+
+const mapStateToProps = ({ contacts: { items, filter } }, ownProps) => {
+  const visibleContacts = getVisibleContacts(items, filter);
+  return {contacts: getSortContacts(visibleContacts, ownProps.onSort),}
+};
 
 const mapDispatchToProps = dispatch => ({
   onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),

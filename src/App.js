@@ -33,38 +33,6 @@ class App extends PureComponent {
     });
   };
 
-  getSortContacts = contactsList => {
-    const { sortBy } = this.state;
-
-    if (sortBy === 'abc') {
-      return contactsList.sort((a, b) => {
-        const aName = a.name.toLowerCase();
-        const bName = b.name.toLowerCase();
-        if (aName < bName) {
-          return -1;
-        }
-        if (aName > bName) {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-
-    if (sortBy === 'id') {
-      return contactsList.sort((a, b) => {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-  };
-
   toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
@@ -131,7 +99,7 @@ class App extends PureComponent {
           classNames="item-fade"
           timeout={500}
         >
-          <ContactList />
+          <ContactList onSort={sortBy}/>
         </CSSTransition>
         
       </Container>
