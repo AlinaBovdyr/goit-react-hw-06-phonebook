@@ -53,13 +53,13 @@ const getSortContacts = (contactsList, sortBy) => {
       });
     }
 
-    if (sortBy === 'id') {
+    if (sortBy === 'date') {
       return contactsList.sort((a, b) => {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
+        if (a.date < b.date) {
           return 1;
+        }
+        if (a.date > b.date) {
+          return -1;
         }
 
         return 0;
@@ -67,14 +67,14 @@ const getSortContacts = (contactsList, sortBy) => {
     }
   };
 
-const mapStateToProps = ({ contacts: { items, filter } }, ownProps) => {
+const mapStateToProps = ({ contacts: { items, filter, sorter } }) => {
   const visibleContacts = getVisibleContacts(items, filter);
-  return {contacts: getSortContacts(visibleContacts, ownProps.onSort),}
+  return {contacts: getSortContacts(visibleContacts, sorter),}
 };
 
 const mapDispatchToProps = dispatch => ({
   onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),
-})
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

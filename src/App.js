@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { CSSTransition } from 'react-transition-group';
-
 import { connect } from 'react-redux';
 
 import Container from './components/Container';
@@ -19,18 +18,9 @@ import './styles/animations/ContactListAppear.css';
 
 class App extends PureComponent {
   state = {
-    sortBy: 'id',
     showModal: false,
     error: false,
     text: ''
-  };
-
-  handleRadioChange = event => {
-    const { value } = event.target;
-
-    this.setState({
-      sortBy: value,
-    });
   };
 
   toggleModal = () => {
@@ -52,7 +42,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const { sortBy, showModal, error, text } = this.state;
+    const { showModal, error, text } = this.state;
 
     return (
       <Container>
@@ -87,7 +77,7 @@ class App extends PureComponent {
         >
           <div>
             <Filter />
-            <Sorter value={sortBy} onRadioChange={this.handleRadioChange} />
+            <Sorter />
           </div>
         </CSSTransition>
         
@@ -99,7 +89,7 @@ class App extends PureComponent {
           classNames="item-fade"
           timeout={500}
         >
-          <ContactList onSort={sortBy}/>
+          <ContactList />
         </CSSTransition>
         
       </Container>

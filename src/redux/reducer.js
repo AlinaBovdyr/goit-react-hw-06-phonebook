@@ -18,7 +18,12 @@ const filter = createReducer('', {
     [actions.changeFilter]: (_, { payload }) => payload,
 });
 
+const sorter = createReducer('date', {
+    [actions.changeSorting]: (_, { payload }) => payload,
+});
+
 export default combineReducers({
     items,
-    filter
+    filter,
+    sorter,
 })

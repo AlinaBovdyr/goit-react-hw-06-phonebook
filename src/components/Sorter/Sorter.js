@@ -1,9 +1,11 @@
 import s from './Sorter.module.css';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import contactsActions from '../../redux/actions';
 
 const Sort = {
   ABC: 'abc',
-  DATE: 'id',
+  DATE: 'date',
 };
 
 function Sorter({ value, onRadioChange }) {
@@ -15,7 +17,7 @@ function Sorter({ value, onRadioChange }) {
           <input
             className={s.input}
             type="radio"
-            name="id"
+            name="date"
             value={Sort.DATE}
             onChange={onRadioChange}
             checked={value === Sort.DATE}
@@ -36,11 +38,19 @@ function Sorter({ value, onRadioChange }) {
       </div>
     </div>
   );
-}
+};
 
 Sorter.propTypes = {
   value: PropTypes.string,
   onRadioChange: PropTypes.func,
 };
 
-export default Sorter;
+const mapStateToProps = (state) => ({
+  value: state.contacts.sorter,
+})
+
+const mapDispatchToProps = dispatch => ({
+  onRadioChange: e => dispatch(contactsActions.changeSorting(e.target.value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sorter);

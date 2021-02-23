@@ -7,10 +7,12 @@ const addContact = createAction('contacts/Add', (name, number) => ({
         name,
         number,
         completed: false,
+        date: Date.now(),
     }
 }));
 
 const deleteContact = createAction('contacts/Delete');
 const changeFilter = createAction('contacts/ChangeFilter');
+const changeSorting = createAction('contacts/ChangeSorting');
 
-export default {addContact, deleteContact, changeFilter};
+export default {addContact, deleteContact, changeFilter, changeSorting};
